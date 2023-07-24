@@ -9,12 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     
+    // Enum defining the possible icons for the game.
     enum Icons: String, CaseIterable {
         case scissors = "✌️", paper = "✋", rock = "👊"
+        
+        // Accessibility label for each icon
+        func iconName() -> String {
+            switch self {
+            case .scissors:
+                return "Scissors"
+            case .paper:
+                return "Paper"
+            case .rock:
+                return "Rock"
+            }
+        }
     }
-    //    let icons = ["✋", "👊", "✌️"]
-    let beats = ["👊", "✌️", "✋"]
+    //    let beats = ["👊", "✌️", "✋"]
     
+    // Game state variables
     @State private var appsChoice = 0
     @State private var playerShouldWin: Bool = false
     @State private var score: Int = 0
@@ -24,6 +37,7 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 80) {
             if gameOver {
+                // Game over screen with final score
                 Text("Game Over")
                 Text("Your score: \(score) / \(rounds)")
                 Button {
@@ -32,32 +46,35 @@ struct ContentView: View {
                     Text("Play Again")
                 }
             } else {
+                // Game in play screen showing app's chisen icon and players objective
                 Text("Score: \(score)")
                 Text(Icons.allCases[appsChoice].rawValue)
                     .font(Font.system(size: 70))
+                    .accessibility(label: Text(Icons.allCases[appsChoice].iconName()))
                 Text(playerShouldWin ? "Choose to WIN" : "Choose to LOSE")
                 
+                // Buttons for the player to select scissors, paper, rock
                 HStack(spacing: 40) {
                     Button {
                         pickedRock()
                         rounds += 1
                     } label: {
-                        Text("👊")
-                            .accessibilityLabel("Rock")
+                        Text(Icons.rock.rawValue)
+                            .accessibilityLabel(Icons.rock.iconName())
                     }
                     Button {
                         pickedPaper()
                         rounds += 1
                     } label: {
-                        Text("✋")
-                            .accessibilityLabel("Paper")
+                        Text(Icons.paper.rawValue)
+                            .accessibilityLabel(Icons.paper.iconName())
                     }
                     Button {
                         pickedScissors()
                         rounds += 1
                     } label: {
-                        Text("✌️")
-                            .accessibilityLabel("Scissors")
+                        Text(Icons.scissors.rawValue)
+                            .accessibilityLabel(Icons.scissors.iconName())
                     }
                 }
                 .font(Font.system(size: 70))
@@ -72,13 +89,13 @@ struct ContentView: View {
     
     func pickedRock() {
         if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == "👊" {
+            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
                 if playerShouldWin {
                     score -= 1
                 } else {
                     score += 1
                 }
-            } else if Icons.allCases[appsChoice].rawValue == "✋" {
+            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
                 if playerShouldWin {
                     score -= 1
                 } else {
@@ -97,13 +114,13 @@ struct ContentView: View {
     
     func pickedPaper() {
         if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == "👊" {
+            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
                 if playerShouldWin {
                     score += 1
                 } else {
                     score -= 1
                 }
-            } else if Icons.allCases[appsChoice].rawValue == "✋" {
+            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
                 if playerShouldWin {
                     score -= 1
                 } else {
@@ -123,13 +140,13 @@ struct ContentView: View {
     
     func pickedScissors() {
         if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == "👊" {
+            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
                 if playerShouldWin {
                     score -= 1
                 } else {
                     score += 1
                 }
-            } else if Icons.allCases[appsChoice].rawValue == "✋" {
+            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
                 if playerShouldWin {
                     score += 1
                 } else {
