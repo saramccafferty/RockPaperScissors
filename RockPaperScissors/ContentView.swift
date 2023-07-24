@@ -50,122 +50,54 @@ struct ContentView: View {
                 Text("Score: \(score)")
                 Text(Icons.allCases[appsChoice].rawValue)
                     .font(Font.system(size: 70))
-                    .accessibility(label: Text(Icons.allCases[appsChoice].iconName()))
-                Text(playerShouldWin ? "Choose to WIN" : "Choose to LOSE")
+                    .accessibility(label: Text("Computer played \(Icons.allCases[appsChoice].iconName())"))
+                Text(playerShouldWin ? "Choose your hand to WIN" : "Choose your hand to LOSE")
                 
                 // Buttons for the player to select scissors, paper, rock
                 HStack(spacing: 40) {
-                    Button {
-                        pickedRock()
-                        rounds += 1
-                    } label: {
-                        Text(Icons.rock.rawValue)
-                            .accessibilityLabel(Icons.rock.iconName())
+                    ForEach(Icons.allCases, id: \.self) { icon in
+                        Button {
+                            playerSelected(icon)
+                        } label: {
+                            Text(icon.rawValue)
+                                .accessibilityLabel(icon.iconName())
+                        }
+                        }
                     }
-                    Button {
-                        pickedPaper()
-                        rounds += 1
-                    } label: {
-                        Text(Icons.paper.rawValue)
-                            .accessibilityLabel(Icons.paper.iconName())
-                    }
-                    Button {
-                        pickedScissors()
-                        rounds += 1
-                    } label: {
-                        Text(Icons.scissors.rawValue)
-                            .accessibilityLabel(Icons.scissors.iconName())
-                    }
-                }
-                .font(Font.system(size: 70))
+                        .font(Font.system(size: 70))
                 
                 Text("Round: \(rounds) / 10")
                 
             }
         }
         .font(.largeTitle)
+        .multilineTextAlignment(.center)
         .padding()
     }
     
-    func pickedRock() {
-        if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
-                if playerShouldWin {
-                    score -= 1
+    func playerSelected(_ selectedIcon: Icons) {
+        rounds += 1
+            if !gameOver {
+                let appIcon = Icons.allCases[appsChoice]
+                let appIconRawValue = appIcon.rawValue
+                let playerIconRawValue = selectedIcon.rawValue
+                
+                if appIconRawValue == Icons.rock.rawValue && playerIconRawValue == Icons.paper.rawValue {
+                    score += playerShouldWin ? 1 : -1
+                } else if appIconRawValue == Icons.paper.rawValue && playerIconRawValue == Icons.scissors.rawValue {
+                    score += playerShouldWin ? 1 : -1
+                } else if appIconRawValue == Icons.scissors.rawValue && playerIconRawValue == Icons.rock.rawValue {
+                    score += playerShouldWin ? 1 : -1
                 } else {
-                    score += 1
+                    score += playerShouldWin ? -1 : 1
                 }
-            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
-                if playerShouldWin {
-                    score -= 1
-                } else {
-                    score += 1
-                }
-            } else {
-                if playerShouldWin {
-                    score += 1
-                } else {
-                    score -= 1
-                }
+                newRound()
             }
-            newRound()
         }
-    }
-    
-    func pickedPaper() {
-        if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
-                if playerShouldWin {
-                    score += 1
-                } else {
-                    score -= 1
-                }
-            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
-                if playerShouldWin {
-                    score -= 1
-                } else {
-                    score += 1
-                }
-            } else {
-                if playerShouldWin {
-                    score -= 1
-                } else {
-                    score += 1
-                }
-            }
-            newRound()
-            
-        }
-    }
-    
-    func pickedScissors() {
-        if !gameOver {
-            if Icons.allCases[appsChoice].rawValue == Icons.rock.rawValue {
-                if playerShouldWin {
-                    score -= 1
-                } else {
-                    score += 1
-                }
-            } else if Icons.allCases[appsChoice].rawValue == Icons.paper.rawValue {
-                if playerShouldWin {
-                    score += 1
-                } else {
-                    score -= 1
-                }
-            } else {
-                if playerShouldWin {
-                    score -= 1
-                } else {
-                    score += 1
-                }
-            }
-            newRound()
-            
-        }
-    }
+
     
     func newRound() {
-        if rounds < 9 {
+        if rounds < 10 {
             appsChoice = Int.random(in: 0...2)
             playerShouldWin = Bool.random()
         } else {
