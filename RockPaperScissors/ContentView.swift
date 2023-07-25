@@ -35,20 +35,31 @@ struct ContentView: View {
     @State private var gameOver = false
     
     var body: some View {
-        VStack(spacing: 80) {
-            if gameOver {
-                // Game over screen with final score
-                Text("Game Over")
-                Text("Your score: \(score) / \(rounds)")
-                Button {
-                    startNewGame()
-                } label: {
-                    Text("Play Again")
-                }
-            } else {
-                // Game in play screen showing app's chisen icon and players objective
-                Text("Score: \(score)")
-                Text(Icons.allCases[appsChoice].rawValue)
+        ZStack {
+            Image("texture_background")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 80) {
+                if gameOver {
+                    // Game over screen with final score
+                    Text("Game Over")
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                    Text("Your score: \(score) / \(rounds)")
+                    Button {
+                        startNewGame()
+                    } label: {
+                        Text("Play Again")
+                            .padding()
+                            .background()
+                            .cornerRadius(10)
+                    }
+                } else {
+                    // Game in play screen showing app's chosen icon and players objective
+                    Text("Score: \(score)")
+                    Text(Icons.allCases[appsChoice].rawValue)
                     .font(Font.system(size: 70))
                     .accessibility(label: Text("Computer played \(Icons.allCases[appsChoice].iconName())"))
                 Text(playerShouldWin ? "Choose your hand to WIN" : "Choose your hand to LOSE")
@@ -60,11 +71,13 @@ struct ContentView: View {
                             playerSelected(icon)
                         } label: {
                             Text(icon.rawValue)
+                                .background()
+                                .cornerRadius(10)
                                 .accessibilityLabel(icon.iconName())
                         }
-                        }
                     }
-                        .font(Font.system(size: 70))
+                }
+                .font(Font.system(size: 70))
                 
                 Text("Round: \(rounds) / 10")
                 
@@ -74,6 +87,8 @@ struct ContentView: View {
         .multilineTextAlignment(.center)
         .padding()
     }
+
+}
     
     // Function to handle players selection
     func playerSelected(_ selectedIcon: Icons) {
@@ -119,6 +134,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            
     }
 }
 
