@@ -75,6 +75,7 @@ struct ContentView: View {
         .padding()
     }
     
+    // Function to handle players selection
     func playerSelected(_ selectedIcon: Icons) {
         rounds += 1
             if !gameOver {
@@ -82,6 +83,7 @@ struct ContentView: View {
                 let appIconRawValue = appIcon.rawValue
                 let playerIconRawValue = selectedIcon.rawValue
                 
+                // Check if the payer correctly won or lost against the apps choice and update the score
                 if appIconRawValue == Icons.rock.rawValue && playerIconRawValue == Icons.paper.rawValue {
                     score += playerShouldWin ? 1 : -1
                 } else if appIconRawValue == Icons.paper.rawValue && playerIconRawValue == Icons.scissors.rawValue {
@@ -95,7 +97,7 @@ struct ContentView: View {
             }
         }
 
-    
+    // Function to start a new round
     func newRound() {
         if rounds < 10 {
             appsChoice = Int.random(in: 0...2)
@@ -105,6 +107,7 @@ struct ContentView: View {
         }
     }
     
+    // Function to start a new game reseting the game variables
     func startNewGame() {
         score = 0
         rounds = 0
@@ -112,7 +115,6 @@ struct ContentView: View {
         newRound()
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
