@@ -36,10 +36,10 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Image("texture_background")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
+//            Image("texture_background")
+//                .resizable()
+//                .scaledToFill()
+//                .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 80) {
                 if gameOver {
@@ -71,7 +71,7 @@ struct ContentView: View {
                             playerSelected(icon)
                         } label: {
                             Text(icon.rawValue)
-                                .background()
+                                .background(Color.purple)
                                 .cornerRadius(10)
                                 .accessibilityLabel(icon.iconName())
                         }
@@ -92,7 +92,6 @@ struct ContentView: View {
     
     // Function to handle players selection
     func playerSelected(_ selectedIcon: Icons) {
-        rounds += 1
             if !gameOver {
                 let appIcon = Icons.allCases[appsChoice]
                 let appIconRawValue = appIcon.rawValue
@@ -108,6 +107,7 @@ struct ContentView: View {
                 } else {
                     score += playerShouldWin ? -1 : 1
                 }
+                rounds += 1
                 newRound()
             }
         }
