@@ -36,10 +36,12 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-//            Image("texture_background")
-//                .resizable()
-//                .scaledToFill()
+//            Color(.systemCyan)
 //                .edgesIgnoringSafeArea(.all)
+            Image("texture_background")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 80) {
                 if gameOver {
@@ -71,7 +73,7 @@ struct ContentView: View {
                             playerSelected(icon)
                         } label: {
                             Text(icon.rawValue)
-                                .background(Color.purple)
+                                .background(Color.teal)
                                 .cornerRadius(10)
                                 .accessibilityLabel(icon.iconName())
                         }
